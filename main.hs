@@ -1,5 +1,7 @@
 module Fib where
 
+import Data.Function
+
 fibonacci :: Integer -> Integer
 fibonacci n | n == 0 = 0
             | n == 1 = 1
@@ -33,3 +35,13 @@ sum'n'count x
 				| x == 0 = (y, z)
 				| otherwise = helper (x `div` 10) (y + x `mod` 10, z + 1)
 
+
+
+class Printable a where
+	toString :: a -> [Char]
+
+instance Printable Bool where
+	toString a = if a then "true" else "false"
+
+instance Printable () where
+	toString a = "unit type"
