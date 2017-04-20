@@ -35,7 +35,8 @@ invert function = [swap pair | pair <- function]
 -- их суперпозиции
 infixr 9 .*.
 (.*.) :: [(Int, Int)] -> [(Int, Int)] -> [(Int, Int)]
-(.*.) = undefined
+(.*.) function1 function2 = [(arg, eval function2 sndArg) | arg <- dom function1, sndArg <- dom (invert function1), sndArg == eval function1 arg]
+-- TODO: finish this function (delete repeats)
 
 -- image f s по табличному представлению функции и множеству целых чисел, представленному
 -- в виде списка без повторений, возвращает образ этого множества (в виде списка
