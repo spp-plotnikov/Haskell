@@ -1,6 +1,7 @@
 module TabledFunctions where
 
 import Data.Tuple
+import Data.List
 
 -- Табличное представление функции типа Int -> Int --- это список пар 
 -- (аргумент, значение) без повторений; гарантируется, что в этом списке нет 
@@ -55,4 +56,4 @@ isInjective = undefined
 -- areMutuallyInverse f g возвращает True тогда и только тогда, когда таблично-представленные
 -- функции f и g --- взаимно-обратны.
 areMutuallyInverse :: [(Int, Int)] -> [(Int, Int)] -> Bool
-areMutuallyInverse = undefined
+areMutuallyInverse function1 function2 = sort function1 == sort (invert function2)
