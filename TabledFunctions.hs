@@ -36,19 +36,17 @@ invert function = [swap pair | pair <- function]
 infixr 9 .*.
 (.*.) :: [(Int, Int)] -> [(Int, Int)] -> [(Int, Int)]
 (.*.) function1 function2 = [(arg, eval function2 sndArg) | arg <- dom function1, sndArg <- dom (invert function1), sndArg == eval function1 arg]
--- TODO: finish this function (delete repeats)
 
 -- image f s по табличному представлению функции и множеству целых чисел, представленному
 -- в виде списка без повторений, возвращает образ этого множества (в виде списка
 -- без повторений). Образ должен быть определен всегда.
 image :: [(Int, Int)] -> [Int] -> [Int]
-image function args = [snd pair | pair <- function, fst pair `elem` args]
--- TODO: finish this function (delete repeats)
+image function args = getSortedListWithOnlyOneOccurences [snd pair | pair <- function, fst pair `elem` args]
 
 -- preimage f s вычисляет прообраз; агрументы и дополнительные условия --- как в
 -- предыдущей задаче.
 preimage :: [(Int, Int)] -> [Int] -> [Int]
-preimage = undefined
+preimage function args = [fst pair | pair <- function, snd pair `elem` args]
 
 -- isInjective f возвращает True тогда и только тогда, когда таблично-представленная функция 
 -- инъективна.
@@ -59,3 +57,7 @@ isInjective = undefined
 -- функции f и g --- взаимно-обратны.
 areMutuallyInverse :: [(Int, Int)] -> [(Int, Int)] -> Bool
 areMutuallyInverse function1 function2 = sort function1 == sort (invert function2)
+
+
+-- my function (for helping)
+getSortedListWithOnlyOneOccurences list = [head item | item <- group (sort list)]
