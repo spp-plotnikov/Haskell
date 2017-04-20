@@ -51,7 +51,7 @@ preimage function args = [fst pair | pair <- function, snd pair `elem` args]
 -- isInjective f возвращает True тогда и только тогда, когда таблично-представленная функция 
 -- инъективна.
 isInjective :: [(Int, Int)] -> Bool
-isInjective = undefined
+isInjective function = sort [snd pair | pair <- function] == image function (dom function)
 
 -- areMutuallyInverse f g возвращает True тогда и только тогда, когда таблично-представленные
 -- функции f и g --- взаимно-обратны.
