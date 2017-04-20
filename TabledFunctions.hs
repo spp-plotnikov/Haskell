@@ -12,7 +12,7 @@ import Data.List
 -- fromFun f s возвращает табличное представление сужения f на s; предполагается,
 -- что f определена в каждой точке s.
 fromFun :: (Int -> Int) -> [Int] -> [(Int, Int)]
-fromFun = undefined
+fromFun function newDom = [(arg, function arg) | arg <- newDom]
 
 -- dom f по табличному представлению функции возвращает её область определения 
 -- в виде списка без повторений.
@@ -41,7 +41,8 @@ infixr 9 .*.
 -- в виде списка без повторений, возвращает образ этого множества (в виде списка
 -- без повторений). Образ должен быть определен всегда.
 image :: [(Int, Int)] -> [Int] -> [Int]
-image = undefined
+image function args = [snd pair | pair <- function, fst pair `elem` args]
+-- TODO: finish this function (delete repeats)
 
 -- preimage f s вычисляет прообраз; агрументы и дополнительные условия --- как в
 -- предыдущей задаче.
