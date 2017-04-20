@@ -42,8 +42,8 @@ infixr 9 .*.
 -- без повторений). Образ должен быть определен всегда.
 image :: [(Int, Int)] -> [Int] -> [Int]
 image function args 
-				 | args == [] = []
-                 | otherwise = getSortedListWithOnlyOneOccurences [snd pair | pair <- function, fst pair `elem` args]
+	| args == [] = []
+    | otherwise = getSortedListWithOnlyOneOccurences [snd pair | pair <- function, fst pair `elem` args]
 
 -- preimage f s вычисляет прообраз; агрументы и дополнительные условия --- как в
 -- предыдущей задаче.
