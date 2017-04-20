@@ -1,47 +1,43 @@
-module Fib where
+import TabledFunctions
+import Control.Exception
+import Data.List 
 
-import Data.Function
+test t = assert t $ return ()
 
-fibonacci :: Integer -> Integer
-fibonacci n | n == 0 = 0
-            | n == 1 = 1
-            | n > 1 = helper 1 0 n
-            | otherwise = (-1)^(1 - n) * fibonacci (-n)
+main = do
+  _ <- test (sort (fromFun (+1) [])      == sort (fromFun (+10) []))
+  _ <- test (sort (fromFun (+1) [1..10]) == sort (fromFun (+1)  [1..10]))
+  _ <- test (sort (fromFun (+1) [1..10]) /= sort (fromFun (+1)  [1..5]))
+  _ <- test (sort (fromFun (+1) [1..10]) /= sort (fromFun (+10) [1..10]))
+  _ <- let f = fromFun (\x -> x*2 + 30) [1..10] in
+       test (sort f == sort (fromFun (\ x -> eval f x) [1..10]))
+  _ <- let f = fromFun (\x -> x*2 + 30) [1..10] in
+       test (sort f /= sort (fromFun (\ x -> 1 + eval f x) [1..10]))
+  _ <- let f = fromFun (\x -> x*x) [-10..10] in
+       test (sort [-10..10] == sort (dom f))
+  _ <- test (sort (fromFun id [1..10]) == sort (invert (fromFun id [1..10])))
+  _ <- test (sort (fromFun (\x -> x * x) [1..10] .*. fromFun id [1..10]) == sort (fromFun (\x -> x*x) [1..10]))
 
-helper cur pr n | n == 1 = cur
-                | otherwise = helper (pr + cur) cur (n - 1)
+  _ <- let f x = x * 10 + 18 in
+       let g x = x * x + x in
+       let g' = fromFun g [1..100] in
+       let f' = fromFun f (image g' [1..100]) in
+       test (sort (fromFun (f . g) [1..100]) == sort (f' .*. g'))
 
+  _ <- test (isInjective (fromFun (\x -> x*x + 4*x + 3) [1..100]))  
+  _ <- test $ not (isInjective (fromFun (\x -> x*x + 4*x + 3) [-100..100]))  
 
-seqA :: Integer -> Integer
-seqA n 
-	| n == 0 = 1
-	| n == 1 = 2
-	| n == 2 = 3
-	| n >= 3  = let
-			helper cur pr prpr n 
-				| n == 2 = cur
-				| otherwise = helper (cur + pr - 2 * prpr) cur pr (n - 1)
-		in 
-		 	helper 3 2 1 n
-	| otherwise = error "not positive"
+  _ <- let f = fromFun (\x -> x*x*x+5*x*x) [1..100] in
+       let g = invert f in
+       test (sort (preimage f (image f [1..100])) == sort (image g (image f [1..100])))
 
+  _ <- test (areMutuallyInverse (fromFun (+1) [1..200]) (fromFun (subtract 1) [1..100]))
 
-sum'n'count :: Integer -> (Integer, Integer)
-sum'n'count x
-	| x == 0 = (0, 1)
-	| otherwise = helper (abs x) (0, 0)
-		where
-			helper x (y, z)
-				| x == 0 = (y, z)
-				| otherwise = helper (x `div` 10) (y + x `mod` 10, z + 1)
+  _ <- test $ not (areMutuallyInverse (fromFun (+1) [1..200]) (fromFun (+1) [1..100]))
 
+  _ <- test (image undefined [] == [])
 
-
-class Printable a where
-	toString :: a -> [Char]
-
-instance Printable Bool where
-	toString a = if a then "true" else "false"
-
-instance Printable () where
-	toString a = "unit type"
+  _ <- test ([] == image (fromFun (+1) [1..10]) [100])
+ 
+  putStrLn "All tests passed."
+ 
