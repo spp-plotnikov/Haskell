@@ -58,7 +58,11 @@ isInjective function = sort [snd pair | pair <- function] == image function (dom
 -- areMutuallyInverse f g возвращает True тогда и только тогда, когда таблично-представленные
 -- функции f и g --- взаимно-обратны.
 areMutuallyInverse :: [(Int, Int)] -> [(Int, Int)] -> Bool
-areMutuallyInverse function1 function2 = sort function1 == sort (invert function2)
+areMutuallyInverse function1 function2 = let results1 = [snd x | x <- function1]
+                                             args2 = [fst x | x <- function2]
+                                             common = [x | x <- results1, x `elem` args2]
+        in sort [fst pair | pair <- function1, snd pair `elem` common] == sort (image function2 common)
+-- areMutuallyInverse function1 function2 = take (length function2) (sort function1) == take (length function1) (sort (invert function2))
 
 
 -- my function (for helping)

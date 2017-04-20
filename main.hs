@@ -31,9 +31,9 @@ main = do
        let g = invert f in
        test (sort (preimage f (image f [1..100])) == sort (image g (image f [1..100])))
 
-  -- _ <- test (areMutuallyInverse (fromFun (+1) [1..200]) (fromFun (subtract 1) [1..100]))
+  _ <- test (areMutuallyInverse (fromFun (+1) [1..200]) (fromFun (subtract 1) [1..100]))
 
-  -- _ <- test $ not (areMutuallyInverse (fromFun (+1) [1..200]) (fromFun (+1) [1..100]))
+  _ <- test $ not (areMutuallyInverse (fromFun (+1) [1..200]) (fromFun (+1) [1..100]))
 
   _ <- test (image undefined [] == [])
 
