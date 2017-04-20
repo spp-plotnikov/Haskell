@@ -35,13 +35,15 @@ invert function = [swap pair | pair <- function]
 -- их суперпозиции
 infixr 9 .*.
 (.*.) :: [(Int, Int)] -> [(Int, Int)] -> [(Int, Int)]
-(.*.) function1 function2 = [(arg, eval function2 sndArg) | arg <- dom function1, sndArg <- dom (invert function1), sndArg == eval function1 arg]
+(.*.) function1 function2 = [(arg, eval function1 sndArg) | arg <- dom function2, sndArg <- dom (invert function2), sndArg == eval function2 arg]
 
 -- image f s по табличному представлению функции и множеству целых чисел, представленному
 -- в виде списка без повторений, возвращает образ этого множества (в виде списка
 -- без повторений). Образ должен быть определен всегда.
 image :: [(Int, Int)] -> [Int] -> [Int]
-image function args = getSortedListWithOnlyOneOccurences [snd pair | pair <- function, fst pair `elem` args]
+image function args 
+				 | args == [] = []
+                 | otherwise = getSortedListWithOnlyOneOccurences [snd pair | pair <- function, fst pair `elem` args]
 
 -- preimage f s вычисляет прообраз; агрументы и дополнительные условия --- как в
 -- предыдущей задаче.
