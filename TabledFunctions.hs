@@ -13,12 +13,14 @@ fromFun = undefined
 -- dom f по табличному представлению функции возвращает её область определения 
 -- в виде списка без повторений.
 dom :: [(Int, Int)] -> [Int]
-dom function = [fst arg | arg <- function]
+dom function = [fst pair | pair <- function]
 
 -- eval f x вычисляет значение таблично представленной функции для заданного
 -- значения аргумента (если оно определено).
 eval :: [(Int, Int)] -> Int -> Int
-eval = undefined
+eval function arg = if arg `elem` dom function 
+	                then head [snd pair | pair <- function, fst pair == arg] 
+	                else error "not defined"
 
 -- invert f по табличному представлению функции возвращает табличное представление
 -- её обратного отображения (это отображение не обязано быть функцией)
